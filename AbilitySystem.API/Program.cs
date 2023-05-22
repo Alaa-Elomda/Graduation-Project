@@ -75,6 +75,10 @@ namespace AbilitySystem.API
             builder.Services.AddScoped<IProductsRepo, ProductsRepo>();
             builder.Services.AddScoped<IProductsManager, ProductsManager>();
 
+            builder.Services.AddScoped<IOrdersRepo, OrdersRepo>();
+            builder.Services.AddScoped<IOrdersManager, OrdersManager>();
+
+
             //builder.Services.AddScoped<IUsersRepo, UsersRepo>();
             //builder.Services.AddScoped<IUsersManager, UsersManager>();
             #endregion
@@ -128,11 +132,17 @@ namespace AbilitySystem.API
 
             builder.Services.AddAuthorization(options =>
             {
-                options.AddPolicy("AllowAdminOnly",
-                    builder => builder.RequireClaim(ClaimTypes.Role, "Admin"));
+                //options.AddPolicy("AllowAdminOnly",
+                //    builder => builder.RequireClaim(ClaimTypes.Role, "Admin"));
 
-                options.AddPolicy("AllowUsers",
-                    builder => builder.RequireClaim(ClaimTypes.Role, "User", "Admin"));
+                //options.AddPolicy("AllowUsers",
+                //    builder => builder.RequireClaim(ClaimTypes.Role, "User", "Admin"));
+
+                options.AddPolicy("AdminOnly", policy =>
+            policy.RequireRole("Admin"));
+
+                options.AddPolicy("UserOnly", policy =>
+                    policy.RequireRole("User"));
             });
 
             #endregion
