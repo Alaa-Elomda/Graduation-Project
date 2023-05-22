@@ -10,8 +10,9 @@ namespace AbilitySystem.BL;
 
 public interface ICategoriesManager
 {
-    List<Category> GetAll();
+    List<CategoryDto> GetAll();
     Category? Get(int id);
+    CategoryWithProductDto? GetByIdWithProducts(int id);
     void Add(CategoryAddDto category);
     void Delete(Category category);
     void Update(CategoryDto category);

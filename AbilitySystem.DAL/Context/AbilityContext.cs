@@ -24,6 +24,8 @@ public class AbilityContext : IdentityDbContext
     public DbSet<Cart> Carts => Set<Cart>();
     public DbSet<OrderProduct> OrderProducts => Set<OrderProduct>();
 
+    //public DbSet<Wishlist> Wishlist => Set<Wishlist>();
+
 
     public AbilityContext(DbContextOptions<AbilityContext> options)
       : base(options)

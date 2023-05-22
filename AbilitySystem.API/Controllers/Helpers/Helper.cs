@@ -1,6 +1,7 @@
 ﻿using AbilitySystem.API.Controllers.Registeration;
 using AbilitySystem.DAL;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -48,11 +49,30 @@ namespace AbilitySystem.API.Controllers.Helpers
             return tokenString;
         }
 
-        //public static int GetRandomInt(int min, int max)
-        //{
-        //    Random random = new Random();
-        //    return random.Next(min, max + 1);
-        //}
+        public string ImageValidation(IFormFile? image)
+        {
+
+            if (image is null)
+            {
+                return "Image is not found";
+            }
+
+            if (image.Length > 1000_000)
+            {
+                return "Image size exceeded the limit";
+            }
+
+            var allowedExtensions = new string[] { ".jpg", ".svg", ".png", ".jpeg" };
+
+            var sentExtension = Path.GetExtension(image.FileName).ToLower();
+
+            if (!allowedExtensions.Contains(sentExtension))
+            {
+                return "Image extension is not valid";
+            }
+
+            return "ok";
+        }
 
         #endregion
     }

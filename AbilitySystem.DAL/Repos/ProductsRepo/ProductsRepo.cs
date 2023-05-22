@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AbilitySystem.DAL;
-public class ProductsRepo : GenericRepo<Category>, IProductsRepo
+public class ProductsRepo : GenericRepo<Product>, IProductsRepo
 {
     private readonly AbilityContext _context;
 
@@ -14,28 +13,16 @@ public class ProductsRepo : GenericRepo<Category>, IProductsRepo
         _context = context;
     }
 
-    public void Add(Product entity)
+    public List<Product> GetAllWithCategory()
     {
-        throw new NotImplementedException();
+        return _context.Products
+            .Include(p => p.Category).ToList();
+           
     }
-
-    public void Delete(Product entity)
+    public Product? GetByIdWithCategory(int id)
     {
-        throw new NotImplementedException();
-    }
-
-    public void Update(Product entity)
-    {
-        throw new NotImplementedException();
-    }
-
-    List<Product> IGenericRepo<Product>.GetAll()
-    {
-        throw new NotImplementedException();
-    }
-
-    Product? IGenericRepo<Product>.GetById(int id)
-    {
-        throw new NotImplementedException();
+        return _context.Products
+            .Include(p => p.Category)
+            .FirstOrDefault(p => p.ProductId == id);
     }
 }

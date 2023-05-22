@@ -7,5 +7,6 @@ using System.Threading.Tasks;
 namespace AbilitySystem.DAL;
 public interface ICategoriesRepo : IGenericRepo<Category>
 {
+    Category? GetByIdWithProducts(int id);
     
 }
