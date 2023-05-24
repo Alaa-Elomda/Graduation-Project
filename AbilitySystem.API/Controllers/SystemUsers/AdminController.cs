@@ -10,26 +10,28 @@ namespace AbilitySystem.API.Controllers.Registeration
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AdminRegisterationController : ControllerBase
+    public class AdminController : ControllerBase
     {
 
         private readonly IConfiguration _configuration;
         private readonly IHelper _helper;
         private readonly UserManager<IdentityUser> _adminManager;
+        private readonly IAdminsManager _adminsManager;
 
 
-        public AdminRegisterationController(IConfiguration configuration,IHelper helper,
-            UserManager<IdentityUser> adminManager)
+        public AdminController(IConfiguration configuration,IHelper helper,
+            UserManager<IdentityUser> adminManager, IAdminsManager adminsManager)
         {
             _configuration = configuration;
             _adminManager = adminManager;
             _helper = helper;
+            _adminsManager = adminsManager;
         }
 
         #region register
         [HttpPost]
-        [Route("RegisterAdmin")]
-        public async Task<ActionResult<TokenDto>> RegisterAdmin(RegisterDto registerDto)
+        [Route("Register")]
+        public async Task<ActionResult<TokenDto>> Register(RegisterDto registerDto)
         {
             var admin = new Admin
             {
@@ -66,10 +68,11 @@ namespace AbilitySystem.API.Controllers.Registeration
         #region Login
        
         [HttpPost]
-        [Route("LoginAdmin")]
-        public async Task<ActionResult<TokenDto>> LoginAdmin(LoginDto credentials)
+        [Route("Login")]
+        public async Task<ActionResult<TokenDto>> Login(LoginDto credentials)
         {
-            Admin? admin =(Admin) await _adminManager.FindByNameAsync(credentials.UserName);
+            Admin? admin =(Admin) await _adminManager.FindByEmailAsync(credentials.Email);
+
             if (admin is null)
             {
                 return BadRequest(new { Message = "This account isn't an admin!!!" });
@@ -90,6 +93,45 @@ namespace AbilitySystem.API.Controllers.Registeration
 
         #endregion
 
+
+        #region GetAll
+        [HttpGet]
+        public ActionResult<List<GetAdminDto>> GetAll()
+        {
+            return _adminsManager.GetAll();
+        }
+        #endregion 
+
+        #region GetById
+        [HttpGet]
+        [Route("{id}")]
+        public ActionResult<GetAdminDto> Get(string id)
+        {
+            return _adminsManager.Get(id);
+        }
+        #endregion
+
+
+        #region Update
+        [HttpPatch]
+        public ActionResult Update(UpdateAdminDto updateAdminDto, string id)
+        {
+
+            _adminsManager.Update(updateAdminDto, id);
+            return Ok("Admin Updated");
+        }
+
+#endregion
+
+
+        #region Delete
+        [HttpDelete]
+        public ActionResult Delete(string id)
+        {
+            _adminsManager.Delete(id);
+            return Ok("Admin Deleted");
+        }
+        #endregion
 
     }
 }

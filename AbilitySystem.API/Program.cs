@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Security.Claims;
 using System.Text;
+
 
 namespace AbilitySystem.API
 {
@@ -23,6 +25,7 @@ namespace AbilitySystem.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
             #endregion
 
             #region Context
@@ -50,20 +53,6 @@ namespace AbilitySystem.API
                 .AddEntityFrameworkStores<AbilityContext>();
                  // .AddDefaultTokenProviders();
 
-
-
-
-            //builder.Services.AddIdentity<Admin, IdentityRole>(options =>
-            //{
-            //    // options.Password.RequiredUniqueChars = 3;
-            //    options.Password.RequireNonAlphanumeric = false;
-            //    options.Password.RequireUppercase = false;
-            //    options.Password.RequireLowercase = false;
-            //    options.Password.RequiredLength = 4;
-            //    options.User.RequireUniqueEmail = true;
-            //})
-            //  .AddEntityFrameworkStores<AbilityContext>();
-
             #endregion
 
 
@@ -75,12 +64,26 @@ namespace AbilitySystem.API
             builder.Services.AddScoped<IProductsRepo, ProductsRepo>();
             builder.Services.AddScoped<IProductsManager, ProductsManager>();
 
+            builder.Services.AddScoped<IUsersRepo, UsersRepo>();
+            builder.Services.AddScoped<IUsersManager, UsersManager>();
+
+            builder.Services.AddScoped<IAdminsRepo, AdminsRepo>();
+            builder.Services.AddScoped<IAdminsManager, AdminsManager>();
+
             builder.Services.AddScoped<IOrdersRepo, OrdersRepo>();
             builder.Services.AddScoped<IOrdersManager, OrdersManager>();
 
+            builder.Services.AddScoped<ICategoriesRepo, CategoriesRepo>();
+            builder.Services.AddScoped<ICategoriesManager, CategoriesManager>();
 
-            //builder.Services.AddScoped<IUsersRepo, UsersRepo>();
-            //builder.Services.AddScoped<IUsersManager, UsersManager>();
+            builder.Services.AddScoped<IProductsRepo, ProductsRepo>();
+            builder.Services.AddScoped<IProductsManager, ProductsManager>();
+
+            builder.Services.AddScoped<ICartsRepo, CartsRepo>();
+            builder.Services.AddScoped<ICartsManager, CartsManager>();
+
+            //builder.Services.AddScoped<IWishlistRepo, WishlistRepo>();
+            //builder.Services.AddScoped<IWishlistManager, WishlistManager>();
             #endregion
 
 
@@ -107,25 +110,6 @@ namespace AbilitySystem.API
                     };
                 });
 
-            //builder.Services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = "AdminSchema";
-            //    options.DefaultChallengeScheme = "AdminSchema";
-            //})
-            //  .AddJwtBearer("AdminSchema", options =>
-            //  {
-            //      var secretKeyString = builder.Configuration.GetValue<string>("SecretKey") ?? "";
-            //      var secretKyInBytes = Encoding.ASCII.GetBytes(secretKeyString);
-            //      var securityKey = new SymmetricSecurityKey(secretKyInBytes);
-
-            //      options.TokenValidationParameters = new TokenValidationParameters()
-            //      {
-            //          IssuerSigningKey = securityKey,
-            //          ValidateIssuer = false,
-            //          ValidateAudience = false,
-            //      };
-            //  });
-
             #endregion
 
             #region Authorization
@@ -145,7 +129,7 @@ namespace AbilitySystem.API
                     policy.RequireRole("User"));
             });
 
-            #endregion
+            #endregion
 
             var app = builder.Build();
 
@@ -158,11 +142,11 @@ namespace AbilitySystem.API
                 app.UseSwaggerUI();
             }
 
-            //app.UseStaticFiles(new StaticFileOptions
-            //{
-            //    FileProvider = new PhysicalFileProvider(builder.Environment.ContentRootPath + "/Images"),
-            //    RequestPath = "/Images"
-            //});
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(builder.Environment.ContentRootPath + "/Images"),
+                RequestPath = "/Images"
+            });
 
             app.UseHttpsRedirection();
 

@@ -16,7 +16,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<List<Category>> GetAll()
+    public ActionResult<List<CategoryDto>> GetAll()
     {
         return _categoriesManager.GetAll();
     }
@@ -33,6 +33,17 @@ public class CategoryController : ControllerBase
     public ActionResult<Category> GetById(int id)
     {
         var category = _categoriesManager.Get(id);
+        if (category is null)
+        {
+            return NotFound();
+        }
+        return category;
+    }
+    [HttpGet]
+    [Route("products/{id}")]
+    public ActionResult<CategoryWithProductDto> GetByIdWithProducts(int id)
+    {
+        var category = _categoriesManager.GetByIdWithProducts(id);
         if (category is null)
         {
             return NotFound();

@@ -19,7 +19,7 @@ namespace AbilitySystem.API.Controllers.Order
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public ActionResult<List<OrderReadDto>> GetAll()
         {
             return _ordersManager.GetAll();
@@ -27,7 +27,7 @@ namespace AbilitySystem.API.Controllers.Order
 
         [HttpGet]
         [Route("{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public ActionResult<OrderWithProductsReadDto> GetByIdWithProducts(int id)
         {
             var orderDto = _ordersManager.GetByIdWithProducts(id);
@@ -40,7 +40,7 @@ namespace AbilitySystem.API.Controllers.Order
 
         [HttpGet]
         [Route("user/{userId}")]
-        [Authorize(Roles = "User")]
+        //[Authorize(Roles = "User")]
         public ActionResult<List<OrderByUserReadDto>> GetByUserWithProducts(string userId)
         {
             var orderDto = _ordersManager.GetByUserWithProducts(userId);
@@ -53,7 +53,7 @@ namespace AbilitySystem.API.Controllers.Order
 
 
         [HttpPost]
-        [Authorize(Roles = "User")]
+        //[Authorize(Roles = "User")]
         public ActionResult Add(OrderAddDto orderDto)
         {
             _ordersManager.Add(orderDto);
@@ -65,7 +65,7 @@ namespace AbilitySystem.API.Controllers.Order
 
         [HttpPatch]
         [Route("{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public ActionResult Edit(int id, OrderEditDto orderDto)
         {
             if (orderDto.OrderId != id) return NotFound(new { Message = "No Order Found!!" });
@@ -80,7 +80,7 @@ namespace AbilitySystem.API.Controllers.Order
 
         [HttpDelete]
         [Route("{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public ActionResult Delete(int id)
         {
 
