@@ -24,11 +24,20 @@ public class OrdersRepo : GenericRepo<Order>, IOrdersRepo
 
     }
 
-    public Order? GetByUserWithProducts(string userId)
+    //public Order? GetByUserWithProducts(string userId)
+    //{
+    //    return _context.Orders
+    //      .Include (o => o.OrderProducts)
+    //        .ThenInclude(op => op.Product)
+    //      .FirstOrDefault (o => o.UserId == userId);
+    //}
+
+    public List<Order>? GetByUserWithProducts(string userId)
     {
         return _context.Orders
-          .Include (o => o.OrderProducts)
+          .Include(o => o.OrderProducts)
             .ThenInclude(op => op.Product)
-          .FirstOrDefault (o => o.UserId == userId);
+          .Where(o => o.UserId == userId)
+        .ToList();
     }
 }

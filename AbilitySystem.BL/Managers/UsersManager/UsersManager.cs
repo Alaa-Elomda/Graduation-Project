@@ -103,8 +103,8 @@ public class UsersManager : IUsersManager
 
         string imgURL = @$"{imagesFolderPath}/{imageName}";
 
-       string fullPath = @$"E:\iTi\Projects\Graduation Project\Backend\Graduation-Project-master\Graduation-Project-master\AbilitySystem.API\Images\{imageName}";
-
+        //string fullPath = @$"E:\iTi\Projects\Graduation Project\Backend\Graduation-Project-master\Graduation-Project-master\AbilitySystem.API\Images\{imageName}";
+        string fullPath = @$"D:\Final Project\BackEnd\New Git\Graduation-Project\AbilitySystem.API\Images\{imageName}";
         using (var stream = System.IO.File.Create(fullPath))
         {
            image.CopyTo(stream);

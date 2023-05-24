@@ -22,25 +22,25 @@ namespace AbilitySystem.API.Controllers.Cart
             return Ok(cartItems);
         }*/
         [HttpGet("{userId}")]
-        public IActionResult GetCartByUserId(string userId)
+        public ActionResult GetCartByUserId(string userId)
         {
             var cartItems = _cartManager.GetCartByUserId(userId);
             return Ok(cartItems);
         }
         [HttpPost]
-        public IActionResult AddToCart(CartDto cartToAdd)
+        public ActionResult AddToCart(CartDto cartToAdd)
         {
             _cartManager.AddToCart(cartToAdd);
             return Ok(new { message = "Product added to cart successfully" });
         }
         [HttpDelete]
-        public IActionResult RemoveFromCart(removeCartDto cartToremoved)
+        public ActionResult RemoveFromCart(removeCartDto cartToremoved)
         {
             _cartManager.RemoveFromCart(cartToremoved);
             return Ok(new { message = "Product removed from cart successfully" });
         }
         [HttpPatch("cart")]
-        public IActionResult EditCart([FromBody] EditCartRequest editCartRequest)
+        public ActionResult EditCart([FromBody] EditCartRequest editCartRequest)
         {
             //_cartManager.Edit(editCartRequest.CartToBeEdited, editCartRequest.EditedCart);
             _cartManager.Edit(editCartRequest.cartToBeEdited,editCartRequest.EditedCart);

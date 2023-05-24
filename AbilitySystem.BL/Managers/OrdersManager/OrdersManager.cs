@@ -73,24 +73,25 @@ public class OrdersManager : IOrdersManager
 
     public List<OrderByUserReadDto>? GetByUserWithProducts(string userId)
     {
-        Order? order = _orderRepo.GetByUserWithProducts(userId);
+        List<Order>? orders = _orderRepo.GetByUserWithProducts(userId);
 
-        if (order == null) { return null; }
+        if (orders == null || orders.Count == 0) { return null; }
 
-        List<OrderByUserReadDto> result = order.OrderProducts
-         .Select(orderProduct => new OrderByUserReadDto
-         {
-             OrderId = order.OrderId,
-             Products = new List<OrderProductNameReadDto>
-                    {
-                             new OrderProductNameReadDto(orderProduct.Product!.Name)
-                    },
-
-             OrderDate = order.OrderDate,
-             TotalPrice = order.TotalPrice,
-             OrderStatus = order.OrderStatus
-         })
-        .ToList();
+        List<OrderByUserReadDto> result = orders.GroupBy(order => order.OrderId).Select(group =>
+        {
+            Order order = group.First(); // Get the first order in the group
+            return new OrderByUserReadDto
+            {
+                OrderId = order.OrderId,
+                Products = order.OrderProducts.Select(orderProduct => new OrderProductNameReadDto
+                (
+                    orderProduct.Product!.Name
+                )).ToList(),
+                OrderDate = order.OrderDate,
+                TotalPrice = order.TotalPrice,
+                OrderStatus = order.OrderStatus
+            };
+        }).ToList();
         return result;
     }
     #endregion
